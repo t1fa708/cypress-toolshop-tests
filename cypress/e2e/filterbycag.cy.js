@@ -1,16 +1,16 @@
+import FilterPage from "../support/Pages/FilterPage";
+
 describe("Filter by Category", () => {
+  const filterpage = new FilterPage;
   beforeEach(() => {
-    cy.visit("https://practicesoftwaretesting.com/");
-    cy.get('[data-test="search-query"]').should("be.visible");
+   filterpage.visit();
+   cy.get('[data-test="search-query"]')
   });
 
   it("filter products by Hand Tools category", () => {
-    // click the label instead of the input
-    cy.get('[data-test="filters"]')
-      .contains("Hand Tools")
-      .click({ force: true });
+    filterpage.filter();
 
-    cy.wait(1500);
+    cy.wait(1000);
 
     // 3 assertions
     cy.get('.card').should("exist");

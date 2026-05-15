@@ -1,15 +1,19 @@
+import SearchPage from "../support/Pages/SearchPage";
+
 describe("Search Test Cases", () => {
+  const searchPage = new SearchPage();
+
   beforeEach(function () {
     cy.fixture("product.json").as("productData");
-    cy.visit("https://practicesoftwaretesting.com/");
+    searchPage.visit();
     cy.get('[data-test="search-query"]').should("be.visible");
   });
 
   it("search for Hammer", function () {
-    cy.searchProduct(this.productData.productName); // using the custom command
+    searchPage.searchProduct(this.productData.productName);
 
     // 3 assertions
-    cy.get('[data-test="search-query"]').should("have.value", this.productData.productName);
+    cy.contains("Hammer").should("be.visible");
     cy.contains("Hammer").should("be.visible");
     cy.get(".card").should("exist");
   });

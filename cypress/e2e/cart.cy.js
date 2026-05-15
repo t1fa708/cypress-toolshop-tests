@@ -1,16 +1,19 @@
+import CartPage from "../support/Pages/CartPage";
+
 describe("Cart Test Cases", () => {
+  const cartPage = new CartPage();
+
   beforeEach(function () {
     cy.fixture("cart.json").as("cartData");
-    cy.visit("https://practicesoftwaretesting.com/");
+    cartPage.visit();
     cy.get('[data-test="search-query"]').should("be.visible");
   });
 
   it("search Leather toolbelt and add it to cart", function () {
-    cy.searchProduct(this.cartData.productName);
-
-    cy.get('[data-test="product-name"]').contains("Leather toolbelt").click();
+    cartPage.searchProduct(this.cartData.productName);
+    cartPage.clickProduct("Leather toolbelt");
     cy.url().should("include", "/product");
-    cy.get('[data-test="add-to-cart"]').should("be.visible").click();
+    cartPage.addToCart();
 
     // 3 assertions
     cy.contains("Product added to shopping cart").should("be.visible");

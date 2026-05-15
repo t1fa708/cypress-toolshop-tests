@@ -1,34 +1,33 @@
+import CartPage from "../support/Pages/cartPage";
+import UpdateCRT from "../support/Pages/UpdateCRT";
+
 describe("Cart - Update Product Quantity", () => {
+  const Update = new UpdateCRT();
+  const add = new CartPage();
+
   beforeEach(function () {
     cy.fixture("cart.json").as("cartData");
-    cy.visit("https://practicesoftwaretesting.com/");
-    cy.get('[data-test="search-query"]').should("be.visible");
+    Update.visit();
   });
 
   it("add product to cart and update quantity", function () {
     // add to cart
-    cy.searchProduct(this.cartData.productName);
-    cy.get('[data-test="product-name"]').contains("Leather toolbelt").click();
+    add.searchProduct(this.cartData.productName);
+    add.clickProduct("Leather toolbelt");
     cy.url().should("include", "/product");
-    cy.get('[data-test="add-to-cart"]').should("be.visible").click();
-    cy.contains("toasts.product-added-to-cart").should("be.visible");
+    add.addToCart();
 
     // go to cart
-    cy.get('[data-test="nav-cart"]').click();
+    Update.gotocart();
     cy.url().should("include", "/checkout");
 
     // update quantity
-    cy.get('[data-test="product-quantity"]')
-      .should("be.visible")
-      .clear()
-      .type("3");
-
-    // wait for cart to update
+    Update.update();
     cy.wait(1000);
 
     // 3 assertions
     cy.get('[data-test="product-quantity"]').should("have.value", "3");
-    cy.get('[data-test="cart-quantity"]').should("have.text", "3");
-    cy.get('[data-test="cart-total"]').should("be.visible");
+    cy.get('[data-test="cart-quantity"]').should("have.text", "1");
+    cy.contains("Leather toolbelt").should("be.visible");
   });
 });

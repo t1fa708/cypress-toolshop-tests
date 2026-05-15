@@ -1,10 +1,12 @@
+import NavPage from "../support/Pages/NavPage";
 describe("Navigate to Contact Page", () => {
+  const navPage = new NavPage();
   beforeEach(() => {
-    cy.visit("https://practicesoftwaretesting.com/");
+    navPage.visit();
   });
 
   it("navigate to contact page", () => {
-    cy.get('[data-test="nav-contact"]').click();
+    navPage.gotocontact();
 
     // 3 assertions
     cy.url().should("include", "/contact");
